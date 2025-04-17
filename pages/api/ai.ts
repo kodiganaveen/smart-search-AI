@@ -25,7 +25,6 @@ const genreMap: Record<string, number> = {
   western: 37
 }
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query } = req.body
 
@@ -36,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         {
           role: 'system',
           content:
-            'Extract the genre from the user query and respond ONLY in JSON like this: { "genre": "comedy", "type": "movie" }'
+            'Analyze the user query and respond in JSON format. If the query contains a specific movie title, respond with { "type": "title", "title": "movie title" }. If the query is about a genre, respond with { "type": "genre", "genre": "genre name" }. If both are present, prioritize the title search.'
         },
         { role: 'user', content: query }
       ],
@@ -46,26 +45,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const aiText = aiResponse.choices[0].message.content || ''
     console.log('AI Response:', aiText)
 
-    let genre = 'action' 
+    let searchType = 'genre'
+    let searchValue = 'action'
+    let title = ''
+
     try {
       const parsed = JSON.parse(aiText)
-      if (parsed.genre) {
-        genre = parsed.genre.toLowerCase()
+      if (parsed.type === 'title' && parsed.title) {
+        searchType = 'title'
+        title = parsed.title
+      } else if (parsed.type === 'genre' && parsed.genre) {
+        searchValue = parsed.genre.toLowerCase()
       }
     } catch (err) {
       console.error('Failed to parse AI response:', aiText)
     }
 
-    const genreId = genreMap[genre] || 28
-    console.log('Final Genre:', genre, '| Genre ID:', genreId)
+    let tmdbUrl: string
+    if (searchType === 'title') {
+      // Search by title
+      tmdbUrl = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&sort_by=popularity.desc`
+    } else {
+      // Search by genre
+      const genreId = genreMap[searchValue] || 28
+      console.log('Final Genre:', searchValue, '| Genre ID:', genreId)
+      tmdbUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
+    }
 
-    const tmdbUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
     const movieResponse = await axios.get(tmdbUrl)
-
     const results = movieResponse.data.results.map((movie: any) => ({
       title: movie.title,
       overview: movie.overview,
-      poster: movie.poster_path
+      poster: movie.poster_path,
+      release_date: movie.release_date,
+      vote_average: movie.vote_average
     }))
 
     res.status(200).json({ results })
