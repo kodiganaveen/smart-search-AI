@@ -1,27 +1,65 @@
-# Smart Search AI
+# Smart Search AI with DIRECTV Integration
 
-Smart Search AI is a React-based application that provides an intelligent search box with voice input capabilities. It allows users to search for information using text or voice commands and displays results in a user-friendly format.
+A Next.js application that combines AI-powered movie search with DIRECTV service information. The project showcases intelligent search capabilities using Groq AI and integration with The Movie Database (TMDB) API.
 
 ## Features
 
-- **Text Search**: Users can type queries into the search box and retrieve results.
-- **Voice Search**: Users can use voice input for hands-free searching.
-- **Dynamic Results**: Displays search results dynamically, including titles, descriptions, and optional images.
-- **Loading Indicator**: Shows a loading spinner while fetching results.
-- **Clear Functionality**: Allows users to clear the search box and results with a single click.
+### 1. AI-Powered Movie Search
+- Natural language query processing
+- Genre extraction and mapping
+- Multi-parameter search support (title, actor, genre, language)
+- Similar movie recommendations
+- Cast information retrieval
 
-## Technologies Used
+### 2. DIRECTV Service Integration
+- Dynamic plan comparison
+- Feature highlights
+- Pricing information
+- Service package details
 
-- **React**: For building the user interface.
-- **Material-UI (MUI)**: For styling and UI components.
-- **Speech Recognition API**: For voice input functionality.
-- **Fetch API**: For making API requests to the backend.
+### 3. Intelligent SEO
+- AI-generated meta titles and descriptions
+- Dynamic SEO optimization based on content
+- Open Graph meta tags for social sharing
+- Server-side SEO generation for better security
 
-## Installation
+### 4. Advanced Search Capabilities
+- Natural language queries support:
+  - "Find me a romantic French movie"
+  - "Show me Leonardo DiCaprio's latest thriller"
+  - "Telugu comedy movies released in 2023"
+  - "Who acted in the movie Pushpa?"
+  - "I want to watch something like Interstellar"
+  - "Spider-Man movie in Hindi"
+
+## Technology Stack
+
+- **Frontend**: Next.js, React 19, Material-UI
+- **AI Integration**: Groq AI (llama3-70b-8192 model)
+- **APIs**: TMDB (The Movie Database)
+- **Language**: TypeScript
+- **Styling**: Material-UI with Emotion
+
+## Project Structure
+
+```
+├── pages/
+│   ├── api/
+│   │   ├── ai.ts           # Movie search API endpoint
+│   │   └── generate-seo.ts # SEO generation endpoint
+│   └── directv.tsx         # DIRECTV service page
+├── utils/
+│   └── aiClient.ts         # Groq AI client configuration
+├── components/             # React components
+├── public/                 # Static assets
+└── types/                  # TypeScript type definitions
+```
+
+## Setup Instructions
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/smart-search-ai.git
+   git clone [repository-url]
    cd smart-search-ai
    ```
 
@@ -30,62 +68,59 @@ Smart Search AI is a React-based application that provides an intelligent search
    npm install
    ```
 
-3. Start the development server:
-   ```bash
-   npm start
+3. Set up environment variables:
+   Create a `.env.local` file with:
+   ```
+   TMDB_API_KEY=your_tmdb_api_key
+   GROQ_API_KEY=your_groq_api_key
    ```
 
-4. Open the application in your browser at `http://localhost:3000`.
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Usage
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-1. **Text Search**:
-   - Type your query into the search box.
-   - Press the "Enter" key or click the search icon to fetch results.
+## API Endpoints
 
-2. **Voice Search**:
-   - Click the microphone icon to start voice input.
-   - Speak your query, and the application will automatically process it.
+### 1. Movie Search API (`/api/ai`)
+- Handles natural language movie queries
+- Extracts search parameters using AI
+- Integrates with TMDB for movie data
+- Supports multiple search types:
+  - Title search
+  - Genre search
+  - Actor search
+  - Similar movies
+  - Movie information
 
-3. **Clear Search**:
-   - Click the clear icon to reset the search box and results.
+### 2. SEO Generation API (`/api/generate-seo`)
+- Generates optimized meta tags
+- Uses AI to analyze page content
+- Creates SEO-friendly titles and descriptions
+- Server-side processing for security
 
-## API Integration
+## Environment Variables
 
-The application sends search queries to the `/api/ai` endpoint using a POST request. The backend should handle the query and return results in the following format:
-```json
-{
-  "results": [
-    {
-      "title": "Result Title",
-      "overview": "Brief description of the result.",
-      "poster": "/path/to/image.jpg"
-    }
-  ]
-}
-```
-
-## File Structure
-
-- **components/SearchBox.tsx**: Contains the main search box component with text and voice input functionality.
-- **public/**: Static assets for the application.
-- **src/**: Source code for the React application.
-
-## Future Enhancements
-
-- Add support for multiple languages in voice recognition.
-- Improve error handling and user feedback.
-- Implement pagination for large result sets.
-- Add unit tests for components.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+- `TMDB_API_KEY`: API key for The Movie Database
+- `GROQ_API_KEY`: API key for Groq AI services
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Contact
+## License
 
-For questions or feedback, please contact [your-email@example.com].
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [The Movie Database (TMDB)](https://www.themoviedb.org/) for movie data
+- [Groq AI](https://groq.com/) for AI capabilities
+- [DIRECTV](https://www.directv.com/) for service information
+- [Material-UI](https://mui.com/) for UI components
